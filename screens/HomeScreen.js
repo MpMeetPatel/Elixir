@@ -7,12 +7,28 @@ import {
    Text,
    View
 } from "react-native";
-
+import { RkButton, RkGallery } from "react-native-ui-kitten";
 import { MonoText } from "../components/StyledText";
+import axios from "axios";
+
+const URL =
+   "https://api.unsplash.com/photos/?client_id=96c045a2ec7fee9c3890012eab291614935112f07fa9dd98a846f2dc58055ed2";
 
 export default class HomeScreen extends React.Component {
    static navigationOptions = {
       header: null
+   };
+   state = {
+      usersImage: []
+   };
+
+   _onPress = () => {
+      axios.get(URL).then(data => {
+         const finalImgs = data.data.map(obj => obj.urls.small);
+         this.setState({
+            usersImage: finalImgs
+         });
+      });
    };
 
    render() {
@@ -31,6 +47,12 @@ export default class HomeScreen extends React.Component {
                      }
                      style={styles.welcomeImage}
                   />
+                  {this.state.usersImage.length > 0 ? (
+                     <RkGallery items={this.state.usersImage} />
+                  ) : null}
+                  <RkButton onPress={this._onPress} rkType="success">
+                     Fetch Date
+                  </RkButton>
                </View>
             </ScrollView>
 
