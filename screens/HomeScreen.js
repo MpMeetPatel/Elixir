@@ -7,7 +7,7 @@ import {
    Text,
    View
 } from "react-native";
-import { RkButton, RkGallery } from "react-native-ui-kitten";
+import { RkButton, RkGalleryImage } from "react-native-ui-kitten";
 import { MonoText } from "../components/StyledText";
 import axios from "axios";
 
@@ -19,7 +19,7 @@ export default class HomeScreen extends React.Component {
       header: null
    };
    state = {
-      usersImage: []
+      usersImage: undefined
    };
 
    _onPress = () => {
@@ -47,9 +47,16 @@ export default class HomeScreen extends React.Component {
                      }
                      style={styles.welcomeImage}
                   />
-                  {this.state.usersImage.length > 0 ? (
-                     <RkGallery items={this.state.usersImage} />
-                  ) : null}
+
+                  {this.state.usersImage
+                     ? this.state.usersImage.map(img => (
+                          <Image
+                             source={{ uri: img }}
+                             style={{ width: 400, height: 400 }}
+                          />
+                       ))
+                     : null}
+
                   <RkButton onPress={this._onPress} rkType="success">
                      Fetch Date
                   </RkButton>
